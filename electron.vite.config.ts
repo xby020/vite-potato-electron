@@ -21,6 +21,7 @@ export default defineConfig(({ mode }) => {
         alias: {
           '@renderer': resolve('src/renderer/src'),
           '@pages': resolve('src/renderer/src/pages'),
+          '@assest': resolve('src/renderer/src/assets'),
         },
       },
       plugins: [

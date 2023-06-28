@@ -7,8 +7,21 @@ export {}
 
 declare module 'vue' {
   export interface GlobalComponents {
+    AppProvider: typeof import('./../components/app/AppProvider.vue')['default']
+    AppTitlebar: typeof import('./../components/app/AppTitlebar.vue')['default']
+    DialogContent: typeof import('./../components/app/DialogContent.vue')['default']
+    LoadingBarContent: typeof import('./../components/app/LoadingBarContent.vue')['default']
+    MsgContent: typeof import('./../components/app/MsgContent.vue')['default']
+    NButton: typeof import('naive-ui')['NButton']
     NCard: typeof import('naive-ui')['NCard']
     NConfigProvider: typeof import('naive-ui')['NConfigProvider']
+    NDialogProvider: typeof import('naive-ui')['NDialogProvider']
+    NLoadingBarProvider: typeof import('naive-ui')['NLoadingBarProvider']
+    NMessageProvider: typeof import('naive-ui')['NMessageProvider']
+    NNotificationProvider: typeof import('naive-ui')['NNotificationProvider']
+    NotificationContent: typeof import('./../components/app/NotificationContent.vue')['default']
+    NPopover: typeof import('naive-ui')['NPopover']
+    NText: typeof import('naive-ui')['NText']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
     Versions: typeof import('./../components/Versions.vue')['default']
