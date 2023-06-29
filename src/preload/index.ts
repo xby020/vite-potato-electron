@@ -1,20 +1,6 @@
-import { contextBridge, ipcRenderer } from 'electron';
+import { shell, contextBridge } from 'electron';
 import { electronAPI } from '@electron-toolkit/preload';
-
-// Custom APIs for renderer
-export const api = {
-  /**
-   * @description 控制窗口最小化/最大化/关闭
-   *
-   * @param  str - 控制命令('minimize'|'maximize'|'close')
-   */
-  control(str: 'minimize' | 'maximize' | 'close') {
-    ipcRenderer.send('control', str);
-  },
-  async isMaximized() {
-    return await ipcRenderer.invoke('isMaximized');
-  },
-};
+import { api } from './adapter/api';
 
 // Use `contextBridge` APIs to expose Electron APIs to
 // renderer only if context isolation is enabled, otherwise
@@ -32,3 +18,13 @@ if (process.contextIsolated) {
   // @ts-ignore (define in dts)
   window.api = api;
 }
+
+// 控制链接是否在默认浏览器中打开
+const aLinks = document.querySelectorAll('a[href]');
+aLinks.forEach((link) => {
+  link.addEventListener('click', (e) => {
+    const url = link.getAttribute('href');
+    e.preventDefault();
+    url && shell.openExternal(url);
+  });
+});

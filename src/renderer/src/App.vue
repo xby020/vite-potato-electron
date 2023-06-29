@@ -3,6 +3,7 @@
     :theme="isDark ? darkTheme : undefined"
     :locale="zhCN"
     :date-locale="dateZhCN"
+    class="text-dark-800 dark:text-light-50"
   >
     <app-provider>
       <router-view />

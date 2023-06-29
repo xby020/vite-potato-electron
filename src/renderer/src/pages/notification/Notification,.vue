@@ -1,11 +1,5 @@
 <template>
   <div class="w-full h-full flex flex-col gap-8">
-    <div class="w-full flex justify-center items-center mt-12">
-      <n-h1>
-        <n-text>Vite Potato Electron</n-text>
-      </n-h1>
-    </div>
-
     <div class="w-full px-12">
       <n-h2 prefix="primary">
         <n-text>系统级通知</n-text>

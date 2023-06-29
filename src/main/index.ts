@@ -1,7 +1,8 @@
-import { app, shell, BrowserWindow, ipcMain } from 'electron';
+import { app, shell, BrowserWindow, Tray, nativeImage, Menu } from 'electron';
 import { join } from 'path';
 import { electronApp, optimizer, is } from '@electron-toolkit/utils';
 import icon from '../../resources/icon.png?asset';
+import { setupHandler } from './worker/handler';
 
 function createWindow(): void {
   // Create the browser window.
@@ -9,8 +10,9 @@ function createWindow(): void {
     width: 900,
     height: 670,
     show: false,
+    backgroundColor: '#282524',
     titleBarStyle: 'hidden',
-    transparent: true,
+    transparent: false,
     autoHideMenuBar: true,
     ...(process.platform === 'linux' ? { icon } : {}),
     webPreferences: {
@@ -20,32 +22,10 @@ function createWindow(): void {
     },
   });
 
+  // Worker
+  setupHandler(mainWindow);
+
   mainWindow.setIgnoreMouseEvents(false);
-
-  // customize app titlebar
-  ipcMain.handle('control', (_event, ...args) => {
-    const params = args[0];
-    switch (params) {
-      case 'minimize':
-        mainWindow.minimize();
-        break;
-      case 'maximize':
-        mainWindow.maximize();
-        break;
-      case 'unmaximize':
-        mainWindow.unmaximize();
-        break;
-      case 'close':
-        mainWindow.close();
-        break;
-      default:
-        break;
-    }
-  });
-
-  ipcMain.handle('isMaximized', () => {
-    return mainWindow.isMaximized();
-  });
 
   mainWindow.on('ready-to-show', () => {
     mainWindow.show();
@@ -71,6 +51,22 @@ function createWindow(): void {
 app.whenReady().then(() => {
   // Set app user model id for windows
   electronApp.setAppUserModelId('com.electron');
+
+  // Tray
+  const icon = nativeImage.createFromPath(
+    join(__dirname, '../../resources/icon.png'),
+  );
+  const tray = new Tray(icon);
+  tray.setToolTip('Vite Potato Electron');
+  tray.setTitle('Vite Potato Electron');
+  const contextMenu = Menu.buildFromTemplate([
+    { label: 'Item1', type: 'radio' },
+    { label: 'Item2', type: 'radio' },
+    { label: 'Item3', type: 'radio', checked: true },
+    { label: 'Item4', type: 'radio' },
+  ]);
+
+  tray.setContextMenu(contextMenu);
 
   // Default open or close DevTools by F12 in development
   // and ignore CommandOrControl + R in production.
